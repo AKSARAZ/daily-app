@@ -150,6 +150,34 @@ model RecurringTemplate {
 - Use proper HTTP status codes
 - Validate inputs before hitting the database
 
+### Unit Testing
+- **Unit tests are mandatory** — every feature must have accompanying tests
+- Testing framework: **Vitest** (preferred over Jest for Next.js + Vite ecosystem)
+- Test files live co-located next to the file they test: `foo.ts` → `foo.test.ts`
+- Test directory structure mirrors `src/`:
+  ```
+  src/
+  ├── lib/
+  │   ├── utils.ts
+  │   └── utils.test.ts
+  ├── app/api/tasks/
+  │   ├── route.ts
+  │   └── route.test.ts
+  ```
+- **What must be tested:**
+  - All utility functions in `lib/`
+  - All API route handlers (GET, POST, PATCH, DELETE)
+  - Any function containing business logic (date calculations, financial summaries, recurring logic)
+- **What does not need tests:**
+  - Pure UI/presentational components with no logic
+  - shadcn `components/ui/` files (never modify these anyway)
+- Test naming convention: `describe("functionName", () => { it("should ...", () => {}) })`
+- Mock Prisma client in tests — never hit the real SQLite database in unit tests
+- Run tests with: `npx vitest run`
+- Run in watch mode during development: `npx vitest`
+- All tests must pass before any commit that touches logic files
+- **Agent must run `npx vitest run` and confirm all tests pass before marking any task as complete**
+
 ---
 
 ## Agent Workflow Protocol
